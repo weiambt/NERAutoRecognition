@@ -1,4 +1,5 @@
 import json
+import os
 
 from hanlp_restful import HanLPClient
 
@@ -75,6 +76,25 @@ class AutoLabelingProcesser():
 
     # 根据文件夹，批量识别
     def batch_recognition(self, input_folder, output_folder):
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
+        output_path = os.path.join(output_folder, 'data.jsonl')
+        if os.path.exists(output_path):
+            os.remove(output_path)
+        for filename in os.listdir(input_folder):
+            file_path = os.path.join(input_folder, filename)
+            if os.path.isdir(file_path):
+                self.batch_recognition(file_path, output_folder)
+            elif filename.endswith('.txt'):
+                whole_text = ''
+                # 读入txt文件
+                with open(file_path, 'r', encoding='utf8') as f:
+                    for l in f.readlines():
+                        whole_text += l
+                res = self.recognition(whole_text)
+                print(res)
+                with open(output_path, 'a', encoding='utf8') as f:
+                    f.write(res + '\n')
 
 
 if __name__ == '__main__':
