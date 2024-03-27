@@ -6,8 +6,7 @@ from hanlp_restful import HanLPClient
 # zh中文，mul多语种
 
 class AutoLabelingProcesser():
-    ENTITY_DICT = {'DATE': 'DATE', 'TIME': 'TIME', 'LOCATION': 'LOC', 'ORGANIZATION': 'ORG', 'ORGANIZATION': 'OORG',
-                   'PERSON': 'OPER'}
+    ENTITY_DICT = {'DATE': 'DATE', 'TIME': 'TIME', 'LOCATION': 'LOC', 'ORGANIZATION': 'PORG','PERSON': 'PPER'}
 
     def __init__(self, task='ner/msra', entity_dict=ENTITY_DICT):
         self.HanLPClient = HanLPClient('https://www.hanlp.com/hanlp/v21/redirect', auth='6602ae18eaf668ab781b7e85',
@@ -54,11 +53,13 @@ class AutoLabelingProcesser():
         # 将extractor_hanlp_json的结果中所有实体类型根据字典entity_dict进行映射
         def match_entity_name(extractor_json: dict) -> dict:
             res = extractor_json.copy()
-            entities = extractor_json['label']
-            for i, entity in enumerate(entities):
+
+            # 去除所有Hanlp识别出来的但是我不需要的实体
+            tmp_label_array = []
+            for entity in res['label']:
                 if entity[2] in self.entity_dict:
-                    res['label'][i][2] = self.entity_dict[entity[2]]
-            # print(res)
+                    tmp_label_array.append([entity[0], entity[1],self.entity_dict[entity[2]]])
+            res['label'] = tmp_label_array
             return res
 
         # 给dict的所有字符串都变成双引号
