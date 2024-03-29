@@ -1,4 +1,7 @@
-def convert_jsonl_to_bio(json_data:dict, bio_path):
+import os
+
+
+def convert_one_jsonl_to_bio(json_data: dict, bio_path):
     text = json_data['text']
     entities = json_data.get('entities', [])
     print(entities)
@@ -9,7 +12,7 @@ def convert_jsonl_to_bio(json_data:dict, bio_path):
     # "label": "ORG"
     for entity in entities:
         print(entity)
-        entity_type,start, end, = entity['label'], entity['start_offset'], entity['end_offset']
+        entity_type, start, end, = entity['label'], entity['start_offset'], entity['end_offset']
         print(entity_type, start, end)
         bio_labels[start] = f'B-{entity_type}'
 
@@ -20,7 +23,7 @@ def convert_jsonl_to_bio(json_data:dict, bio_path):
     with open(bio_path, 'a', encoding='utf-8') as bio_file:
         last = ''
         for char, label in zip(text, bio_labels):
-            print(char)
+            # print(char)
             if char == ' ':
                 pass
             # elif char == '\n':
@@ -31,7 +34,6 @@ def convert_jsonl_to_bio(json_data:dict, bio_path):
             else:
                 bio_file.write(f'{char} {label}\n')
             last = char
-        # bio_file.write('\n')
         bio_file.flush()
 
 
@@ -44,9 +46,13 @@ def test():
     }
     print(type(json_data))
     bio_path = "output.bio"
-    convert_jsonl_to_bio(json_data, bio_path)
+    convert_one_jsonl_to_bio(json_data, bio_path)
 
-def jsonl2bio(jsonl_path, bio_path):
+
+# 读入整个jsonl文件，转换成BIO格式，并在句子间加空行
+def jsonl2bio(input_path, output_path):
+    if os.path.exists(output_path):
+        os.remove(output_path)
     with open(input_path, 'r', encoding='utf-8') as f:
         for line in f.readlines():
             # line.
@@ -54,7 +60,28 @@ def jsonl2bio(jsonl_path, bio_path):
             json_data = eval(line)  # str -> dict
             print(json_data)
             # print(json_data['label'])
-            convert_jsonl_to_bio(json_data, output_path)
+            convert_one_jsonl_to_bio(json_data, output_path)
+
+    def split_sentences(input_file, output_file):
+        cnt = 0
+        str = ''
+        with open(input_file, "r", encoding='utf-8') as file:
+            for line in file.readlines():
+                # print(line)
+                str += line
+                if line[0] in ['。']:
+                    str += '\n'
+                    cnt += 1
+        # print(str)
+        print('the length of sentences is %d' % cnt)
+
+        with open(output_file, "w", encoding='utf-8') as out:
+            out.write(str)
+            out.flush()
+
+    # BIO格式要求句子间插入空行
+    split_sentences(output_path, output_path)  # 修改源文件
+
 
 if __name__ == "__main__":
     # test()
@@ -63,4 +90,3 @@ if __name__ == "__main__":
     output_path = "../data_process/爆炸_2024-3-23_output.bio"
     # output_path = "output_test.bio"
     jsonl2bio(input_path, output_path)
-
