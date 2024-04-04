@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import datetime
 
 from hanlp_restful import HanLPClient
 
@@ -7,8 +8,11 @@ from hanlp_restful import HanLPClient
 # zh中文，mul多语种
 
 class AutoLabelingProcesser():
-    ENTITY_DICT = {'DATE': 'DATE', 'TIME': 'TIME', 'LOCATION': 'LOC', 'ORGANIZATION': 'PORG','PERSON': 'PPER'}
-
+    # ENTITY_DICT = {'DATE': 'DATE', 'TIME': 'TIME', 'LOCATION': 'LOC', 'ORGANIZATION': 'PORG','PERSON': 'PPER'}
+    # 我的数据
+    # ENTITY_DICT = {'DATE': 'DATE', 'TIME': 'TIME', 'ORGANIZATION': 'PORG','PERSON': 'PPER'}
+    # CEC数据
+    ENTITY_DICT = {'DATE': 'DATE', 'TIME': 'TIME', 'ORGANIZATION': 'OORG', 'PERSON': 'OPER'}
     def __init__(self, task='ner/msra', entity_dict=ENTITY_DICT):
         self.HanLPClient = HanLPClient('https://www.hanlp.com/hanlp/v21/redirect', auth='6602ae18eaf668ab781b7e85',
                                        language='zh')
@@ -74,27 +78,27 @@ class AutoLabelingProcesser():
             return ans
         return add_double_quotes(match_entity_name(extractor_hanlp_json(ans)))
 
+    def solve_file(self,input_file,output_file):
+        whole_text = ''
+        # 读入txt文件
+        with open(input_file, 'r', encoding='utf-8') as f:
+            for l in f.readlines():
+                whole_text += l
+        res = self.recognition(whole_text)
+        print(res)
+        with open(output_file, 'a', encoding='utf-8') as f:
+            f.write(res + '\n')
+
     # 根据文件夹，批量识别
-    def batch_recognition(self, input_folder, output_folder):
-        if not os.path.exists(output_folder):
-            os.makedirs(output_folder)
-        output_path = os.path.join(output_folder, 'data.jsonl')
-        if os.path.exists(output_path):
-            os.remove(output_path)
+    def batch_recognition(self, input_folder, output_file):
+        # if not os.path.exists(output_path):
+        #     os.remove(output_path)
         for filename in os.listdir(input_folder):
             file_path = os.path.join(input_folder, filename)
             if os.path.isdir(file_path):
-                self.batch_recognition(file_path, output_folder)
+                self.batch_recognition(file_path, output_file)
             elif filename.endswith('.txt'):
-                whole_text = ''
-                # 读入txt文件
-                with open(file_path, 'r', encoding='utf8') as f:
-                    for l in f.readlines():
-                        whole_text += l
-                res = self.recognition(whole_text)
-                print(res)
-                with open(output_path, 'a', encoding='utf8') as f:
-                    f.write(res + '\n')
+                self.solve_file(file_path,output_file)
 
 
 if __name__ == '__main__':
@@ -105,7 +109,12 @@ if __name__ == '__main__':
     text = '2023年12月1日上午8点12分,江苏省无锡市锡山区下雨了,江苏天坎有限公司的张三发生了事故。上午10点12分,江苏省无锡市锡山区雨停了。'
     # for x in list(range(len(text))):
     #     print(x, end=',')
-    s = processor.recognition(text)
-    print(s)
+    # s = processor.recognition(text)
+    # print(s)
     # sss = str(ss)
     # print(dict(sss))
+
+
+    input = r'D:\APersonal\Agraduate\AinGroup\AProjects\NER\data_process\爆炸_txt'
+    output = r'D:\APersonal\Agraduate\AinGroup\AProjects\NER\data_process\data2024-3-31.jsonl'
+    processor.batch_recognition(input, output)

@@ -1,18 +1,35 @@
 import os
 
+# 处理转义字符
+def pre_process(input_path, output_path):
+    res = ''
+    with open(input_path, 'r', encoding='utf-8') as f:
+        for line in f.readlines():
+            i = 0
+            while i < len(line):
+                if i < len(line) - 1 and line[i:i + 2] == '\/':
+                    res += '/'
+                    i += 2
+                else:
+                    res += line[i]
+                    i += 1
 
-def convert_one_jsonl_to_bio(json_data: dict, bio_path):
-    text = json_data['text']
-    entities = json_data.get('entities', [])
+    with open(output_path, 'w', encoding='utf-8') as out:
+        out.write(res)
+        out.flush()
+
+
+def convert_one_jsonl_to_bio(json_dict: dict, bio_path):
+    # input: {"text": "Peter Blackburn", "label": [[0, 15, "PERSON"]]}
+    text = json_dict['text']
+    entities = json_dict.get('label', [])
     print(entities)
-    bio_labels = ['O'] * len(text)  # Initialize with 'O' (Outside) for each character
+    bio_labels = ['O'] * len(text)
     # "id": 0,
     # "start_offset": 0,
     # "end_offset": 6,
     # "label": "ORG"
-    for entity in entities:
-        print(entity)
-        entity_type, start, end, = entity['label'], entity['start_offset'], entity['end_offset']
+    for start, end, entity_type in entities:
         print(entity_type, start, end)
         bio_labels[start] = f'B-{entity_type}'
 
@@ -53,6 +70,7 @@ def test():
 def jsonl2bio(input_path, output_path):
     if os.path.exists(output_path):
         os.remove(output_path)
+    pre_process(input_path, input_path)
     with open(input_path, 'r', encoding='utf-8') as f:
         for line in f.readlines():
             # line.
@@ -84,9 +102,13 @@ def jsonl2bio(input_path, output_path):
 
 
 if __name__ == "__main__":
+    # test preprocess
+    # pre_process('../generate_data/数据.jsonl', '../generate_data/数据_sol.jsonl')
+    # pre_process('../generate_data/数据.jsonl', '../generate_data/数据.jsonl')
+
     # test()
-    input_path = "../data_process/爆炸_2024-3-23_solved.jsonl"
+    input_path = "test.jsonl"
     # input_path = "test.jsonl"
-    output_path = "../data_process/爆炸_2024-3-23_output.bio"
+    output_path = "test.bio"
     # output_path = "output_test.bio"
     jsonl2bio(input_path, output_path)

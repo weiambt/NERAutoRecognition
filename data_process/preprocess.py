@@ -1,8 +1,6 @@
 import os
 from docx import Document
 
-from jsonl2bio import conve
-
 from pandas import DataFrame
 
 # docx这个库只能处理docx后缀文件，不能处理doc后缀，用重命名的方法不行。

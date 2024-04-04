@@ -1,0 +1,1 @@
+测试三个实体类型TYPE、CASULTY、PROPERTYLOSS的可行性
