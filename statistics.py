@@ -9,7 +9,7 @@ def count_entities(input_file):
         for l in f.readlines():
             # 末尾会多空行。l = 'a O\n'
             line = l[:-1] if l[-1] == '\n' else l
-            if len(line)==0:continue
+            if len(line) == 0: continue
             char_label = line.split(' ')[1]
             cnt += 1
             if char_label == 'O': continue
