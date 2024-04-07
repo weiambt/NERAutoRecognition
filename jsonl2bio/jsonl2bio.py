@@ -31,6 +31,8 @@ def convert_one_jsonl_to_bio(json_dict: dict, bio_path):
     # "label": "ORG"
     for start, end, entity_type in entities:
         print(entity_type, start, end)
+        if start >= len(text):
+            continue
         bio_labels[start] = f'B-{entity_type}'
 
         for i in range(start + 1, end):
