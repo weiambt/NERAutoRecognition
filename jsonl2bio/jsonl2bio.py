@@ -104,13 +104,13 @@ def jsonl2bio(input_path, output_path):
 
 
 if __name__ == "__main__":
-    # test preprocess
+    # test.py preprocess
     # pre_process('../generate_data/数据.jsonl', '../generate_data/数据_sol.jsonl')
     # pre_process('../generate_data/数据.jsonl', '../generate_data/数据.jsonl')
 
-    # test()
+    # test.py()
     input_path = "test.jsonl"
-    # input_path = "test.jsonl"
+    # input_path = "test.py.jsonl"
     output_path = "test.bio"
     # output_path = "output_test.bio"
     jsonl2bio(input_path, output_path)

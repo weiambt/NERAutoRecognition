@@ -1,0 +1,33 @@
+杀 B-TYPE
+害 I-TYPE
+并 I-TYPE
+埋 I-TYPE
+尸 I-TYPE
+
+
+杀 B-TYPE
+害 I-TYPE
+并 I-TYPE
+分 I-TYPE
+尸 I-TYPE
+
+可 O
+燃 O
+气 O
+体 O
+外 B-TYPE
+泄 I-TYPE
+
+重 B-TYPE
+大 I-TYPE
+生 I-TYPE
+产 I-TYPE
+安 I-TYPE
+全 I-TYPE
+责 I-TYPE
+任 I-TYPE
+
+故 B-TYPE
+意 I-TYPE
+冲 I-TYPE
+撞 I-TYPE

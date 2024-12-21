@@ -35,7 +35,7 @@ from jsonl2bio import jsonl2bio
 
 statistics.count_entities('train.bio')
 
-# The number of each entity in the file named 【test.bio】--->
+# The number of each entity in the file named 【test.py.bio】--->
 # [('OPER', 28), ('OORG', 43), ('DATE', 46), ('TIME', 27), ('LOC', 25), ('TYPE', 39), ('CLOSS', 53), ('PPER', 3), ('PORG', 2)]
 
 statistics.count_entities('test.bio')
