@@ -1,0 +1,6 @@
+The length of sentences in the file named 【emergency_2025_2_8_2/data.csv】 is 562
+The number of each entity in the file named 【emergency_2025_2_8_2/data.csv】--->[('CLOSS', 169), ('DATE', 220), ('LORG', 91), ('LPER', 209), ('OORG', 78), ('OPER', 79), ('PLOSS', 53), ('PORG', 99), ('PPER', 140), ('TIME', 166), ('TYPE', 310)]
+The length of sentences in the file named 【emergency_2025_2_8_2/train.csv】 is 391
+The number of each entity in the file named 【emergency_2025_2_8_2/train.csv】--->[('CLOSS', 114), ('DATE', 143), ('LORG', 68), ('LPER', 135), ('OORG', 55), ('OPER', 42), ('PLOSS', 37), ('PORG', 67), ('PPER', 111), ('TIME', 114), ('TYPE', 206)]
+The length of sentences in the file named 【emergency_2025_2_8_2/dev.csv】 is 171
+The number of each entity in the file named 【emergency_2025_2_8_2/dev.csv】--->[('CLOSS', 55), ('DATE', 77), ('LORG', 23), ('LPER', 74), ('OORG', 23), ('OPER', 37), ('PLOSS', 16), ('PORG', 32), ('PPER', 29), ('TIME', 52), ('TYPE', 104)]

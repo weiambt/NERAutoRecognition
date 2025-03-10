@@ -7,6 +7,7 @@ def count_entities(input_file):
         cnt = 0
 
         for l in f.readlines():
+            # print(l)
             # 末尾会多空行。l = 'a O\n'
             line = l[:-1] if l[-1] == '\n' else l
             if len(line) == 0: continue
@@ -21,6 +22,9 @@ def count_entities(input_file):
     print('The number of each entity in the file named 【%s】' % input_file, end='--->')
     print(sorted(list(mp.items())))
 
+    print('The number of total entity in the file named 【%s】' % input_file, end='--->')
+    print(sum(mp.values()))
+
 
 def count_sentences(input_file):
     cnt = 0
@@ -33,13 +37,34 @@ def count_sentences(input_file):
 
 
 if __name__ == '__main__':
+    path = 'cluener/train.csv'
+    count_sentences(path)
+    count_entities(path)
+
+    path = 'cluener/dev.csv'
+    count_sentences(path)
+    count_entities(path)
+
+
+    # path = 'emergency_2025_02_16/data.csv'
+    # count_sentences(path)
+    # count_entities(path)
+    #
+    # path = 'emergency_2025_02_16/train.csv'
+    # count_sentences(path)
+    # count_entities(path)
+    #
+    # path = 'emergency_2025_02_16/dev.csv'
+    # count_sentences(path)
+    # count_entities(path)
+
     # Counter({'TYPE': 194, 'CASUALTY': 43, 'PROPERTYLOSS': 21})
     # count_entities('爆炸_2024-3-23_output.bio',['TYPE','PROPERTYLOSS','CASUALTY'])
 
     # Counter({'TYPE': 150, 'CASUALTY': 36, 'PROPERTYLOSS': 15})
-    count_entities('爆炸_2024-3-23_train.bio')
-    count_sentences('爆炸_2024-3-23_train.bio')
+    # count_entities('爆炸_2024-3-23_train.bio')
+    # count_sentences('爆炸_2024-3-23_train.bio')
     # 训练集占比
     # Type:0.77,CASUALTY:0.83,PROPERTYLOSS:0.71
 
-    count_sentences('爆炸_2024-3-23_test.bio')
+    # count_sentences('爆炸_2024-3-23_test.bio')
